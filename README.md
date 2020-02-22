@@ -15,5 +15,5 @@ var lzyFirework = new Fireworks(
 	,lzySlow=2    //发射速度模式 0|FALSE 加速上升; 1 匀速; >=2 分段变速;如果设置值大于2,则会应用到烟花（最小）上升速度上;此外烟花最小上升速度默认为 5
 )
 ```
--Interfaces:
+- Interfaces:
 `lzyRandomShoot(control=1,radius=0)`
