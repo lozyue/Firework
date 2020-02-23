@@ -1,7 +1,7 @@
 # Firework
 A code of Javascript to show beauty and draw your own beauty !
 
-## describe
+## Description
 Firework JS by Lozyue draw fantastic fireworks on your website by using HTML5 Canvas.
 
 # Usage
@@ -39,7 +39,7 @@ var lzyFirework = new Fireworks(
 ```
 
 `fireInterval(functionName,intervalGap);`：替代调用setInterval 
-**不能使用匿名函数
+**不要使用匿名函数
 函数必须直接挂载在window全局对象上**
 
 `delInterval()`：替代clearInterval
@@ -48,4 +48,4 @@ var lzyFirework = new Fireworks(
 # Instruction
 - [Blog Page](https://vip.hnyz.fun/uncategorized/24.html)
 
-And that's all for this Library. No more updates!ᶘ ͡°ᴥ͡°ᶅ
+And that's all for this Library. No more updates!  ᶘ ͡°ᴥ͡°ᶅ
