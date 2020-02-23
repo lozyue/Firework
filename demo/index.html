@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>firework JS 测试</title>
+	<script src="./firework.min.js"></script>
+	<script src="./alertify.js"></script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<style type="text/css">
+	html,body{background: black;margin:0;padding:0;overflow:hidden;}
+	#wrap{position:absolute;display:flex;bottom:66px;right:20%;flex-direction: column;}
+	button{margin:6px auto;padding:6px 10px;border:none;box-shadow:lightblue 1px 1px 1px;background-color:#b9b9b963;color:lightblue;font-size:18px;font-weight:300;opacity:0;}
+	.message{position:absolute;display:inline-block;left:206px;color:#3b677b;font-weight:400;font-size:16px;opacity:0;}
+</style>
+</head>
+<body>
+
+
+<div id="wrap">
+	<button id="init" title="点击屏幕试试" class="lzyShadow-blue">初始化</button><span class="message lzyShadow-blue">点击屏幕试试！</span>
+	<button id="btn-1" class="lzyShadow-blue">五连炸</button>
+	<button id="btn-2" class="lzyShadow-blue">蛟龙出海</button>
+	<button id="btn-3" class="lzyShadow-blue">来个爱心焰火</button>
+	<button id="btn-4" class="lzyShadow-blue">随机之美-焰火</button>
+	<button id="btn-5" class="lzyShadow-blue">清空随机焰火队列</button>
+	<button id="btn-6" class="lzyShadow-blue" title="我可以点两次！">内置fireInterval方法</button>
+	<button id="btn-7" class="lzyShadow-blue">清空内置定时器方法delInterval</button>
+</div>
+
+<script type="text/javascript">
+var lzyFirework;
+fadeIn($('#init')[0],1000);
+function init(){
+	// var lzyFirework = new Fireworks(88,3,1,8,true,0,2,2);//示例(适合mobile用户)
+	lzyFirework = new Fireworks(
+		particlesNum=118    // default:150 发射的粒子数目.越小越流畅
+		,partSpeed=4    //default:5 粒子运动速度。主要正相关控制粒子飞跃距离(直观就是) 
+		,speedVariance=5     //default:10 粒子运动速度跨距,影响多个因素，直观影响粒子密集程度。粒子速度处于 U(partSpeed,speedVariance)的这个邻域上
+		,friction=8    //直观理解为摩擦力。调整烟花大小时可调整此参数进一步装修
+		,bindClick=true    // BOOL类型 是否绑定点击事件（用户点击canvas发射烟花）
+		,showTarget=false    //是否显示目标位置，可用于调试时,效果亲自尝试即知，一般不开启
+		,lineWidth=2    //正相关画的烟花和焰火粒子的大小（不是正比）
+		,lzySlow=2    //发射速度模式 0|FALSE 加速上升; 1 匀速; >=2 分段变速;如果设置值大于2,则会应用到烟花（最小）上升速度上;此外烟花最小上升速度默认为 5
+	);
+	fadeIn($('.message')[0],1000);fadeIn($('#btn-1')[0],1000);
+	$('#btn-1')[0].removeEventListener('click',init);//防止重复调用
+}
+$('#init')[0].addEventListener('click',init);
+
+$('#btn-1')[0].addEventListener('click',function(){
+	lzyFirework.lzyShoot(fireQueue.rectangle,true);
+	fadeIn($('#btn-2')[0],1000);
+});
+
+$('#btn-2')[0].addEventListener('click',function(){
+	lzyFirework.lzyShoot(fireQueue.line);
+	fadeIn($('#btn-3')[0],1000);
+});
+
+$('#btn-3')[0].addEventListener('click',function(){
+	lzyFirework.lzyShoot(fireQueue.heart);
+	fadeIn($('#btn-4')[0],1000);
+});
+
+$('#btn-4')[0].addEventListener('click',function(){
+	lzyFirework.lzyRandomShoot();
+	fadeIn($('#btn-5')[0],1000);
+});
+
+$('#btn-5')[0].addEventListener('click',function(){
+	lzyFirework.lzyRandomShoot(false);
+	fadeIn($('#btn-6')[0],1000);
+});
+
+function onceFire(){
+	// window.dragonLine=function(){lzyFirework.lzyShoot(fireQueue.line)};//这种匿名函数就会出bug
+	lzyFirework.fireInterval(dragonLine,1600);
+	$('#btn-6')[0].removeEventListener('click',onceFire);//防止重复调用
+	$('#btn-6')[0].addEventListener('click',twiceFire);
+	fadeIn($('#btn-7')[0],1000);
+}
+function twiceFire(){
+	// window.rectangle=function(){lzyFirework.lzyShoot(fireQueue.rectangle,true)};
+	lzyFirework.fireInterval(rectangle,1600);
+	$('#btn-6')[0].removeEventListener('click',twiceFire);//防止重复调用
+}
+
+$('#btn-6')[0].addEventListener('click',onceFire);
+
+$('#btn-7')[0].addEventListener('click',function(){
+	lzyFirework.delInterval();
+});
+
+var view={
+cw:document.documentElement.clientWidth || document.body.clientWidth
+,ch:document.documentElement.clientHeight || document.body.clientHeight
+}
+var fireQueue={
+	line:{
+		0:[view.cw/2,view.ch,view.cw/2,view.ch/16*14]
+		,1:[view.cw,view.ch,view.cw/2,view.ch/16*13]
+		,2:[0,view.ch,view.cw/2,view.ch/16*12]
+		,3:[view.cw,view.ch/7*6,view.cw/2,view.ch/16*11]
+		,4:[0,view.ch/7*6,view.cw/2,view.ch/16*10]
+		,5:[view.cw,view.ch/6*5,view.cw/2,view.ch/16*9]
+		,6:[0,view.ch/6*5,view.cw/2,view.ch/16*8]
+		,7:[view.cw,view.ch/6*5,view.cw/2,view.ch/16*7]
+		,8:[0,view.ch/6*5,view.cw/2,view.ch/16*6]
+		,9:[view.cw,view.ch/5*4,view.cw/2,view.ch/16*5]
+		,10:[0,view.ch/5*4,view.cw/2,view.ch/16*4]
+		,11:[view.cw,view.ch/5*4,view.cw/2,view.ch/16*3]
+		,12:[0,view.ch/5*4,view.cw/2,view.ch/16*2]
+	}
+	,heart:{
+		0:[view.cw/2,view.ch/2,view.cw/2-45*2.72,view.ch/2-45*3.06]
+		,1:[view.cw/2,view.ch/2,view.cw/2+45*2.72,view.ch/2-45*3.06]
+		,2:[view.cw/2,view.ch/2,view.cw/2-45*3.46,view.ch/2-45*2.01]
+		,3:[view.cw/2,view.ch/2,view.cw/2+45*3.46,view.ch/2-45*2.01]
+		,4:[view.cw/2,view.ch/2,view.cw/2-45*3.08,view.ch/2-45*0.30]
+		,5:[view.cw/2,view.ch/2,view.cw/2+45*3.08,view.ch/2-45*0.30]
+		,6:[view.cw/2,view.ch/2,view.cw/2-45*1,view.ch/2-45*2.43]
+		,7:[view.cw/2,view.ch/2,view.cw/2+45*1,view.ch/2-45*2.43]
+		,8:[view.cw/2,view.ch/2,view.cw/2,view.ch/2+45*3]
+		,9:[view.cw/2,view.ch/2,view.cw/2-45*2.28,view.ch/2+45*1]
+		,10:[view.cw/2,view.ch/2,view.cw/2+45*2.28,view.ch/2+45*1]
+		,11:[view.cw/2,view.ch/2,view.cw/2-45*1.5,view.ch/2+45*2.25]
+		,12:[view.cw/2,view.ch/2,view.cw/2+45*1.5,view.ch/2+45*2.25]
+		,13:[view.cw/2,view.ch/2,view.cw/2,view.ch/2-45*2]
+	}
+	,rectangle:{
+		0:[view.cw,view.ch,view.cw/4*3,view.ch/3]
+		,1:[0,view.ch,view.cw/4*2,view.ch/3*2]
+		,2:[view.cw,0,view.cw/4,view.ch/3]
+		,3:[0,0,view.cw/5*3,view.ch/5]
+		,4:[view.cw,0,view.cw/5*2,view.ch/5]
+	}
+};
+
+function rectangle(){lzyFirework.lzyShoot(fireQueue.rectangle,true)};
+function dragonLine(){lzyFirework.lzyShoot(fireQueue.line)};
+function drawheart(){lzyFirework.lzyShoot(lzyFirework.lzyFireQueue.heart)}
+
+function $(selector, context) {
+    return (context || document).querySelectorAll(selector);
+}
+function fadeIn(el, display=false){
+  el.style.opacity = 0;
+  el.style.display = display || "block";
+
+  (function fade() {
+    var val = parseFloat(el.style.opacity);
+    if (!((val += .02) > 1)) {
+      el.style.opacity = val;
+      requestAnimationFrame(fade);
+    }
+  })();
+}
+</script>
+
+
+<style>
+.lzyShadow-blue{
+	/*position: absolute;*/
+	-webkit-text-stroke:1px;
+	text-shadow:
+	2px 2px 1px rgba(0,0,0,.4),
+	0 0 20px #42A5F5,  
+	0 0 40px rgba(33, 150, 243, .75),
+	0 0 50px rgba(33, 150, 243, .75),
+	0 0 60px rgba(33, 150, 243, .75)
+}
+.lzyShadow-blue:before{
+	content:'';
+	/*position: absolute;*/
+	background: rgba(66, 165, 245, .25);
+	z-index: -1;
+	opacity: .7;
+	filter: blur(30px);
+	width: 100%;
+	height: 100%
+}
+</style>
+</body>
+</html>
