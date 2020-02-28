@@ -21,9 +21,9 @@ var lzyFirework = new Fireworks(
 ```
 - Interfaces(方法)：
 > `lzyShoot(queueFire,interval=false)`：发射自定义烟花队列方法
-    `@parame queueFire`：一个对象数组，数组包含发射点的坐标和目标位置的坐标（二维数组？我也不知道叫啥）
 
-> `interval`：是否排队发射，内部采用interval实现。需要一个个发射就传递一个毫秒数即可
+    `@parame queueFire`：一个对象数组，数组包含发射点的坐标和目标位置的坐标（二维数组？我也不知道叫啥）
+    `@parame interval`：是否排队发射，内部采用interval实现。需要一个个发射就传递一个毫秒数即可
 
 > `lzyRandomShoot(control=1,radius=0)` ：内置的随机放烟花函数。模拟真实效果
 ```
