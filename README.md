@@ -1,8 +1,10 @@
-# Firework
+# Firework-master
 A code of Javascript to show beauty and draw your own beauty !
 
 ## Description
 Firework JS by Lozyue draw fantastic fireworks on your website by using HTML5 Canvas.
+
+![firework-instance](http://vip.hnyz.fun/data/firework-show.png "firework-master")
 
 # Usage
 - initialize:
